@@ -15,118 +15,117 @@ const nav = document.createElement("nav");
 
 const brand = document.createElement("span");
 brand.className = "nav-brand";
-brand.textContent = "KBG";
+brand.textContent = "KBG.";
 nav.appendChild(brand);
 
 const ul = document.createElement("ul");
-
 for (const p of pages) {
   const li = document.createElement("li");
   const a  = document.createElement("a");
-
   if (p.external) {
-    a.href   = p.url;
-    a.target = "_blank";
-    a.rel    = "noopener";
+    a.href = p.url; a.target = "_blank"; a.rel = "noopener";
   } else {
     a.href = new URL(p.url === "" ? "" : p.url, new URL(BASE_PATH, location.origin)).href;
   }
-
   a.textContent = p.title;
-
-  const currentPath = location.pathname.replace(/\/$/, "") || "/";
-  const linkPath    = new URL(a.href).pathname.replace(/\/$/, "") || "/";
-  if (currentPath === linkPath) a.classList.add("current");
-
-  li.appendChild(a);
-  ul.appendChild(li);
+  const cp = location.pathname.replace(/\/$/, "") || "/";
+  const lp = new URL(a.href).pathname.replace(/\/$/, "") || "/";
+  if (cp === lp) a.classList.add("current");
+  li.appendChild(a); ul.appendChild(li);
 }
-
 nav.appendChild(ul);
 
-/* Theme button */
 const themeBtn = document.createElement("button");
 themeBtn.id = "theme-btn";
 themeBtn.setAttribute("aria-label", "Toggle theme");
+themeBtn.textContent = "☀️";
 nav.appendChild(themeBtn);
 
 const existingNav = document.querySelector("nav");
 if (existingNav) existingNav.remove();
 document.body.prepend(nav);
 
-/* ── Theme ── */
-const savedTheme = localStorage.getItem("theme") || "auto";
-let currentTheme = savedTheme;
-
-function applyTheme(t) {
-  const root  = document.documentElement;
-  const isDark = t === "auto"
-    ? window.matchMedia("(prefers-color-scheme: dark)").matches
-    : t === "dark";
-  root.setAttribute("data-theme", isDark ? "dark" : "light");
-  themeBtn.textContent = isDark ? "☀️" : "🌙";
-}
-
-applyTheme(currentTheme);
-
-themeBtn.addEventListener("click", () => {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  currentTheme = isDark ? "light" : "dark";
-  localStorage.setItem("theme", currentTheme);
-  applyTheme(currentTheme);
-});
-
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-  if (currentTheme === "auto") applyTheme("auto");
-});
-
-/* ── Progress Bar ── */
+/* ── Scroll progress ── */
 const bar = document.createElement("div");
 bar.id = "progress-bar";
 document.body.prepend(bar);
-
 window.addEventListener("scroll", () => {
-  const scrolled = window.scrollY;
-  const total    = document.documentElement.scrollHeight - window.innerHeight;
-  bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : "0%";
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = total > 0 ? `${(window.scrollY / total) * 100}%` : "0%";
 }, { passive: true });
 
+/* ── Theme (dark default) ── */
+let isDark = localStorage.getItem("theme") !== "light";
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+  themeBtn.textContent = isDark ? "☀️" : "🌙";
+  if (!isDark) {
+    document.documentElement.style.setProperty("--bg", "#f8fafc");
+    document.documentElement.style.setProperty("--surface", "#ffffff");
+    document.documentElement.style.setProperty("--surface-2", "#f1f5f9");
+    document.documentElement.style.setProperty("--text", "#0f172a");
+    document.documentElement.style.setProperty("--muted", "#94a3b8");
+    document.documentElement.style.setProperty("--muted-2", "#475569");
+    document.documentElement.style.setProperty("--border", "rgba(124,58,237,0.2)");
+    document.documentElement.style.setProperty("--border-2", "rgba(124,58,237,0.1)");
+  } else {
+    document.documentElement.style.removeProperty("--bg");
+    document.documentElement.style.removeProperty("--surface");
+    document.documentElement.style.removeProperty("--surface-2");
+    document.documentElement.style.removeProperty("--text");
+    document.documentElement.style.removeProperty("--muted");
+    document.documentElement.style.removeProperty("--muted-2");
+    document.documentElement.style.removeProperty("--border");
+    document.documentElement.style.removeProperty("--border-2");
+  }
+}
+applyTheme();
+themeBtn.addEventListener("click", () => {
+  isDark = !isDark;
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  applyTheme();
+});
+
 /* ── Scroll Reveal ── */
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
-);
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.06, rootMargin: "0px 0px -30px 0px" });
 
 function initReveal() {
-  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  document.querySelectorAll(".reveal, .reveal-left").forEach(el => revealObserver.observe(el));
 }
-
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initReveal);
-} else {
-  initReveal();
+} else { initReveal(); }
+
+/* ── Counter animation ── */
+export function animateCounters() {
+  document.querySelectorAll(".metric-num[data-target]").forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || "";
+    const isDecimal = el.dataset.decimal === "true";
+    const duration = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = isDecimal ? (eased * target).toFixed(1) : Math.round(eased * target);
+      el.textContent = val + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
 }
 
 /* ── Footer ── */
 const footer = document.createElement("footer");
-footer.innerHTML = `© ${new Date().getFullYear()} Kalkidan Berhe Gebrekirstos · Built with ♥ · <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>`;
+footer.innerHTML = `© ${new Date().getFullYear()} Kalkidan Berhe Gebrekirstos · <a href="mailto:gebkalkidan@gmail.com">gebkalkidan@gmail.com</a> · <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>`;
 document.body.appendChild(footer);
 
-/* ── fetchJSON utility ── */
 export async function fetchJSON(url) {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed");
     return await res.json();
-  } catch (e) {
-    console.warn("Fetch failed", e);
-    return [];
-  }
+  } catch (e) { console.warn("Fetch failed", e); return []; }
 }

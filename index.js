@@ -1,40 +1,45 @@
-import { fetchJSON } from "./global.js";
+import { fetchJSON, animateCounters } from "./global.js";
 
-function cardHTML(p) {
+function cardHTML(p, i) {
   const tags  = (p.tags  || []).map(t => `<span class="tag">${t}</span>`).join("");
   const links = (p.links || []).map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.label} →</a>`).join("");
   return `
     <article class="card reveal">
+      <div class="card-num">${String(i + 1).padStart(2, "0")}</div>
       <h3>${p.title}</h3>
       <div class="meta">${p.year}</div>
       ${tags ? `<div class="tags">${tags}</div>` : ""}
       <p>${p.description}</p>
       ${links ? `<div class="links">${links}</div>` : ""}
-    </article>
-  `;
+    </article>`;
 }
 
 async function init() {
-  const container = document.getElementById("latest-projects");
+  /* counters */
+  const metricsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { animateCounters(); metricsObserver.disconnect(); } });
+  }, { threshold: 0.3 });
+  const strip = document.querySelector(".metrics-strip");
+  if (strip) metricsObserver.observe(strip);
 
+  /* projects */
+  const container = document.getElementById("latest-projects");
   try {
     const projects = await fetchJSON("./lib/projects.json");
-    if (container && Array.isArray(projects) && projects.length > 0) {
-      container.innerHTML = projects.slice(0, 3).map(cardHTML).join("");
-      /* trigger observer for newly added .reveal nodes */
-      document.querySelectorAll(".card.reveal").forEach(el => {
-        const obs = new IntersectionObserver((entries) => {
+    if (container && projects.length > 0) {
+      container.innerHTML = projects.slice(0, 3).map((p, i) => cardHTML(p, i)).join("");
+      container.querySelectorAll(".card.reveal").forEach(el => {
+        const obs = new IntersectionObserver(entries => {
           entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
-        }, { threshold: 0.08 });
+        }, { threshold: 0.06 });
         obs.observe(el);
       });
     } else if (container) {
-      container.innerHTML = `<p style="color:var(--text-muted)">No projects found.</p>`;
+      container.innerHTML = `<p style="color:var(--muted)">No projects found.</p>`;
     }
-  } catch (err) {
-    if (container) container.innerHTML = `<p style="color:var(--text-muted)">Error loading projects.</p>`;
+  } catch {
+    if (container) container.innerHTML = `<p style="color:var(--muted)">Error loading projects.</p>`;
   }
-
 }
 
 init();

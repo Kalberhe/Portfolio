@@ -3,38 +3,119 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Kalkidan Berhe Gebrekirstos – Data Science at UC San Diego. ML pipelines, data visualization, and analytics." />
-  <title>Kalkidan Berhe Gebrekirstos</title>
+  <meta name="description" content="Kalkidan Berhe Gebrekirstos — Data Analyst. ML pipelines, production dashboards, NLP, and sports analytics." />
+  <title>Kalkidan Berhe Gebrekirstos — Data Analyst</title>
   <link rel="stylesheet" href="style.css">
   <script type="module" src="global.js"></script>
 </head>
 <body>
   <main class="container">
 
-    <section class="hero reveal">
-      <div class="hero-text">
-        <h1>Kalkidan Berhe<br>Gebrekirstos</h1>
-        <p class="tagline">Data Analyst · ML · Visualization</p>
-        <p>
-          I translate complex datasets into decisions that move the needle. From surfacing
-          a 15% performance lift for a Division I basketball program to shipping production
-          dashboards and NLP pipelines across industries — I specialize in turning messy
-          data into clear, actionable strategy.
-        </p>
+    <!-- HERO -->
+    <section class="hero-section reveal">
+      <div class="hero-eyebrow">
+        <span class="badge available">Open to Roles</span>
+        <span class="hero-loc">📍 San Diego, CA</span>
       </div>
 
-      <div class="hero-img-wrap">
-        <img src="images/Me.jpg" alt="Kalkidan Berhe Gebrekirstos">
+      <h1 class="hero-name">
+        Kalkidan<br>
+        <span class="outline">Berhe.</span>
+      </h1>
+
+      <p class="hero-role">
+        Data Analyst
+        <span class="sep">/</span>
+        ML Engineer
+        <span class="sep">/</span>
+        Dashboard Builder
+      </p>
+
+      <p class="hero-bio">
+        I translate complex datasets into decisions that move the needle — from surfacing a 15% performance lift for a Division&nbsp;I basketball program to shipping NLP pipelines, autonomous simulation systems, and client-facing dashboards across industries.
+      </p>
+
+      <div class="hero-cta">
+        <a href="projects/" class="btn-primary">View Work →</a>
+        <a href="resume/"   class="btn-ghost">Resume</a>
+        <a href="contact/"  class="btn-ghost">Contact</a>
       </div>
     </section>
 
-    <section class="reveal">
-      <div class="section-header">
-        <h2>Latest Projects</h2>
-        <a href="projects/">View All →</a>
+    <!-- METRICS -->
+    <div class="metrics-strip reveal">
+      <div class="metric-cell">
+        <span class="metric-num" data-target="4" data-suffix="+">0</span>
+        <span class="metric-label">Roles Held</span>
       </div>
+      <div class="metric-cell">
+        <span class="metric-num" data-target="8" data-suffix="+">0</span>
+        <span class="metric-label">SME Clients</span>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-num" data-target="15" data-suffix="%">0</span>
+        <span class="metric-label">Performance Lift</span>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-num" data-target="35" data-suffix="%">0</span>
+        <span class="metric-label">Reporting Time Cut</span>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <section class="skills-section reveal">
+      <p class="section-label">Toolbox</p>
+      <h2 class="section-heading">Skills & <span>Stack</span></h2>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h4>Languages</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span><span class="skill-tag">SQL</span>
+            <span class="skill-tag">R</span><span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Java</span><span class="skill-tag">C/C++</span>
+            <span class="skill-tag">Stata</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h4>ML & Stats</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Regression</span><span class="skill-tag">NLP</span>
+            <span class="skill-tag">A/B Testing</span><span class="skill-tag">Feature Eng.</span>
+            <span class="skill-tag">scikit-learn</span><span class="skill-tag">XGBoost</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h4>Visualization</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Tableau</span><span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Streamlit</span><span class="skill-tag">D3.js</span>
+            <span class="skill-tag">Plotly</span><span class="skill-tag">geopandas</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h4>Platforms</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">AWS</span><span class="skill-tag">GCP</span>
+            <span class="skill-tag">Docker</span><span class="skill-tag">Spark</span>
+            <span class="skill-tag">ROS2</span><span class="skill-tag">Isaac Sim</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS -->
+    <section class="projects-section reveal">
+      <div class="section-header-row">
+        <div>
+          <p class="section-label">Work</p>
+          <h2 class="section-heading" style="margin-bottom:0">Featured <span>Projects</span></h2>
+        </div>
+        <a href="projects/" class="view-all-link">View All →</a>
+      </div>
+
       <div id="latest-projects" class="project-grid">
-        <p style="color:var(--text-muted)">Loading projects…</p>
+        <p style="color:var(--muted)">Loading…</p>
       </div>
     </section>
 

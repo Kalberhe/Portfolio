@@ -3,38 +3,41 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Kalkidan Berhe Gebrekirstos – Data Science at UC San Diego. ML pipelines, data visualization, and analytics." />
   <title>Kalkidan Berhe Gebrekirstos</title>
-  <link rel="stylesheet" href="style.css?v=teal">
-  <script type="module" src="global.js?v=teal"></script>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="global.js"></script>
 </head>
 <body>
   <main class="container">
-    <section class="hero">
-      <div>
-        <h1>Kalkidan Berhe Gebrekirstos</h1>
-        <p class="tagline">Data Science Major at UC San Diego</p>
-        
+
+    <section class="hero reveal">
+      <div class="hero-text">
+        <h1>Kalkidan Berhe<br>Gebrekirstos</h1>
+        <p class="tagline">Data Analyst · ML · Visualization</p>
         <p>
-          I transform raw data into actionable narratives. As a Lead Project Manager at Eclipse Analytics 
-          and a Data Science student, I specialize in building ML pipelines, analyzing complex datasets 
-          like NBA player performance and mortgage inequality, and designing intuitive visualizations.
+          I translate complex datasets into decisions that move the needle. From surfacing
+          a 15% performance lift for a Division I basketball program to shipping production
+          dashboards and NLP pipelines across industries — I specialize in turning messy
+          data into clear, actionable strategy.
         </p>
-        
-        <div id="stats" class="stats-grid"></div>
       </div>
-      
-      <img src="images/Me.jpg" alt="Kalkidan Profile">
+
+      <div class="hero-img-wrap">
+        <img src="images/Me.jpg" alt="Kalkidan Berhe Gebrekirstos">
+      </div>
     </section>
 
-    <section>
-      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:1rem;">
+    <section class="reveal">
+      <div class="section-header">
         <h2>Latest Projects</h2>
-        <a href="projects/" style="color:var(--accent); font-weight:bold; text-decoration:none;">View All →</a>
+        <a href="projects/">View All →</a>
       </div>
       <div id="latest-projects" class="project-grid">
-        <p>Loading Projects...</p>
+        <p style="color:var(--text-muted)">Loading projects…</p>
       </div>
     </section>
+
   </main>
 
   <script type="module" src="index.js"></script>

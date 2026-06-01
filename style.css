@@ -244,35 +244,6 @@ nav a.current {
   .hero p { max-width: 100%; }
 }
 
-/* ── Stats ── */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-  border-top: 1px solid var(--glass-border);
-  padding-top: 1.75rem;
-}
-.stat-box { text-align: center; }
-.stat-box dt {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.stat-box dd {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--accent);
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-@media (max-width: 500px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
 /* ── Section Header ── */
 .section-header {
   display: flex;

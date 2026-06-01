@@ -1,26 +1,35 @@
 [
   {
     "title": "Mortgage Inequality Explorer",
-    "year": "2024",
-    "description": "Interactive geospatial dashboard analyzing U.S. mortgage access and inequality (2018–2023). Integrates 100k+ HMDA records with FRED macro rates across 50+ census-tract regions.",
-    "tags": ["Python", "D3.js", "GeoJSON", "Pandas", "HMDA"],
+    "year": "2025",
+    "description": "Interactive Streamlit dashboard analyzing mortgage approval disparities across 50+ U.S. states. Built on 100,000+ HMDA and Census records with geospatial choropleth visualizations revealing structural inequality patterns.",
+    "tags": ["Python", "Streamlit", "geopandas", "pandas", "Census API"],
     "links": [
       {"label": "Live Demo", "href": "https://hoyalim.github.io/mortgage-Inequality-Explorer/interactive_dashboard.html"},
       {"label": "Code",      "href": "https://github.com/Kalberhe/mortgage-Inequality-Explorer"}
     ]
   },
   {
-    "title": "NBA All-Star Prediction",
+    "title": "NBA All-Star Selection Prediction",
     "year": "2025",
-    "description": "Supervised ML pipeline predicting NBA All-Star selections with 99% ROC-AUC across 15,000 player-seasons. Logistic regression built from scratch with L2 regularization and mini-batch gradient descent.",
-    "tags": ["Python", "scikit-learn", "NumPy", "ML"],
+    "description": "Logistic regression model (L2 regularization) trained on 15,000 NBA player-seasons to predict All-Star selections. Validated through cross-validation and ROC analysis with strong discriminative performance.",
+    "tags": ["Python", "scikit-learn", "NumPy", "pandas", "Plotly"],
     "links": []
+  },
+  {
+    "title": "Sports Betting Behavior Analysis",
+    "year": "2024",
+    "description": "Analyzed real-time odds movement across hundreds of EPL and NFL games using EDA, regression modeling, and A/B-style comparisons to evaluate risk patterns and payout variability.",
+    "tags": ["Python", "LiveSports API", "Regression", "EDA"],
+    "links": [
+      {"label": "View Report", "href": "https://drive.google.com/file/d/1CTdeA6R5j5pBtOlefa-8UVxA5h-k_CQh/view?usp=sharing"}
+    ]
   },
   {
     "title": "LoL Match Prediction",
     "year": "2024",
-    "description": "Logistic regression and gradient boosting on pro match data. Audited for fairness with >95% accuracy and analysis of blue-side advantage bias.",
-    "tags": ["Python", "XGBoost", "Pandas", "Fairness"],
+    "description": "Logistic regression and gradient boosting on professional match data. Achieved >95% accuracy and conducted a fairness audit analyzing blue-side advantage bias across thousands of games.",
+    "tags": ["Python", "XGBoost", "pandas", "Fairness"],
     "links": [
       {"label": "View Project", "href": "https://kalberhe.github.io/DSC80_FINAL_PROJECT/"},
       {"label": "Code",         "href": "https://github.com/Kalberhe/DSC80_FINAL_PROJECT"}
@@ -29,7 +38,7 @@
   {
     "title": "Bikewatching",
     "year": "2024",
-    "description": "Interactive visualization tracking bike traffic patterns and urban mobility infrastructure. Highlights station usage trends and commuter flow across the city.",
+    "description": "Interactive D3.js visualization tracking bike traffic patterns and urban mobility infrastructure across city stations. Highlights commuter flow trends and peak usage by time of day.",
     "tags": ["D3.js", "JavaScript", "GeoJSON", "CSS"],
     "links": [
       {"label": "Live Demo", "href": "https://kalberhe.github.io/bikewatching/"},
@@ -39,30 +48,11 @@
   {
     "title": "Persuasive or Deceptive Visualization",
     "year": "2024",
-    "description": "Explores how design choices can mislead or persuade. Paired visualizations of the same dataset showing how framing manipulates perception.",
+    "description": "Paired visualizations of the same dataset demonstrating how design choices — axis scaling, color, framing — can mislead or persuade. A case study in data ethics and communication.",
     "tags": ["D3.js", "JavaScript", "Data Ethics"],
     "links": [
       {"label": "Live Demo", "href": "https://kalberhe.github.io/DSC106-Peoject-2/"},
       {"label": "Code",      "href": "https://github.com/Kalberhe/DSC106-Peoject-2"}
-    ]
-  },
-  {
-    "title": "Decadal Pacific Warming Analysis",
-    "year": "2025",
-    "description": "Statistical analysis of ocean surface temperature trends in the Central and Western Equatorial Pacific using hypothesis testing and regression modeling.",
-    "tags": ["Python", "R", "Stats", "Hypothesis Testing"],
-    "links": [
-      {"label": "Live Demo", "href": "https://kalberhe.github.io/Project3/"},
-      {"label": "Code",      "href": "https://github.com/Kalberhe/Project3"}
-    ]
-  },
-  {
-    "title": "Sports Betting Behavior",
-    "year": "2024",
-    "description": "Analyzed real-time odds movement across 200+ EPL & NFL games vs. betting behavior using live API data. Applied regression to evaluate market efficiency and risk.",
-    "tags": ["Python", "API", "Regression", "EDA"],
-    "links": [
-      {"label": "View Report", "href": "https://drive.google.com/file/d/1CTdeA6R5j5pBtOlefa-8UVxA5h-k_CQh/view?usp=sharing"}
     ]
   },
   {

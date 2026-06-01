@@ -16,7 +16,6 @@ function cardHTML(p) {
 
 async function init() {
   const container = document.getElementById("latest-projects");
-  const statsBox  = document.getElementById("stats");
 
   try {
     const projects = await fetchJSON("./lib/projects.json");
@@ -36,19 +35,6 @@ async function init() {
     if (container) container.innerHTML = `<p style="color:var(--text-muted)">Error loading projects.</p>`;
   }
 
-  try {
-    const stats = await fetchJSON("https://api.github.com/users/Kalberhe");
-    if (statsBox && stats.public_repos !== undefined) {
-      statsBox.innerHTML = `
-        <div class="stat-box"><dl><dt>Repos</dt><dd>${stats.public_repos}</dd></dl></div>
-        <div class="stat-box"><dl><dt>Followers</dt><dd>${stats.followers}</dd></dl></div>
-        <div class="stat-box"><dl><dt>Gists</dt><dd>${stats.public_gists}</dd></dl></div>
-        <div class="stat-box"><dl><dt>Following</dt><dd>${stats.following}</dd></dl></div>
-      `;
-    }
-  } catch (e) {
-    console.warn("GitHub stats failed", e);
-  }
 }
 
 init();

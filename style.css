@@ -26,6 +26,12 @@
   --btn-fill:        #d4af37;
   --btn-text:        #060d18;
   --progress:        linear-gradient(90deg, #d4af37, #9a7b1a);
+
+  --orb-gold:        rgba(212, 175, 55, 0.14);
+  --orb-navy:        rgba(26, 58, 100, 0.45);
+  --orb-deep:        rgba(8, 20, 40, 0.6);
+  --grid-color:      rgba(212, 175, 55, 0.045);
+  --grid-glow:       rgba(212, 175, 55, 0.06);
 }
 
 /* ── Light: white + navy outline ── */
@@ -53,6 +59,12 @@
   --btn-fill:        #0a2540;
   --btn-text:        #ffffff;
   --progress:        linear-gradient(90deg, #0a2540, #2a5080);
+
+  --orb-gold:        rgba(10, 37, 64, 0.07);
+  --orb-navy:        rgba(10, 37, 64, 0.05);
+  --orb-deep:        rgba(10, 37, 64, 0.03);
+  --grid-color:      rgba(10, 37, 64, 0.07);
+  --grid-glow:       rgba(10, 37, 64, 0.04);
 }
 
 :root {
@@ -75,11 +87,114 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
+  position: relative;
+  isolation: isolate;
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; }
+
+/* ── Animated ambient background ── */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  will-change: transform;
+}
+
+.ambient-orb--1 {
+  width: 55vmax;
+  height: 55vmax;
+  top: -18%;
+  right: -12%;
+  background: radial-gradient(circle, var(--orb-gold) 0%, transparent 68%);
+  animation: orb-float-a 22s ease-in-out infinite alternate;
+}
+
+.ambient-orb--2 {
+  width: 45vmax;
+  height: 45vmax;
+  bottom: -15%;
+  left: -8%;
+  background: radial-gradient(circle, var(--orb-navy) 0%, transparent 70%);
+  animation: orb-float-b 28s ease-in-out infinite alternate;
+}
+
+.ambient-orb--3 {
+  width: 32vmax;
+  height: 32vmax;
+  top: 38%;
+  left: 42%;
+  background: radial-gradient(circle, var(--orb-deep) 0%, transparent 72%);
+  animation: orb-float-c 18s ease-in-out infinite alternate;
+}
+
+.ambient-grid {
+  position: absolute;
+  inset: -50%;
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 45%, black 20%, transparent 75%);
+  animation: grid-drift 40s linear infinite;
+}
+
+.ambient-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 70% 30%, var(--grid-glow), transparent 60%);
+  animation: glow-pulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes orb-float-a {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-6%, 10%) scale(1.08); }
+}
+
+@keyframes orb-float-b {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(8%, -6%) scale(1.12); }
+}
+
+@keyframes orb-float-c {
+  from { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  to   { transform: translate(-10%, -8%) scale(1.15); opacity: 1; }
+}
+
+@keyframes grid-drift {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to   { transform: translate(56px, 56px) rotate(0.5deg); }
+}
+
+@keyframes glow-pulse {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb,
+  .ambient-grid,
+  .ambient-grid::after {
+    animation: none !important;
+  }
+}
+
+.site-sidebar,
+.site-main {
+  position: relative;
+  z-index: 1;
+}
 
 /* ── Progress ── */
 #progress-bar {
@@ -108,6 +223,7 @@ a { color: inherit; }
   flex-direction: column;
   padding: 2rem 1.5rem 1.5rem;
   background: var(--sidebar-bg);
+  backdrop-filter: blur(12px);
   border-right: 1px solid var(--sidebar-border);
   transition: transform 0.35s var(--ease), background 0.3s;
 }

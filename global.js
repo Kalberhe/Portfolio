@@ -13,8 +13,20 @@ export function assetUrl(path) {
   return new URL(path, new URL(BASE_PATH, location.origin)).href;
 }
 
-export const PROFILE_IMAGE = assetUrl("assets/profile.jpg");
+export const PROFILE_IMAGE = assetUrl("assets/me.jpg");
 export const PROFILE_FALLBACK = assetUrl("assets/profile.svg");
+
+/* ── Animated ambient background ── */
+const ambientBg = document.createElement("div");
+ambientBg.className = "ambient-bg";
+ambientBg.setAttribute("aria-hidden", "true");
+ambientBg.innerHTML = `
+  <span class="ambient-orb ambient-orb--1"></span>
+  <span class="ambient-orb ambient-orb--2"></span>
+  <span class="ambient-orb ambient-orb--3"></span>
+  <span class="ambient-grid"></span>
+`;
+document.body.prepend(ambientBg);
 
 /* ── Sidebar navigation ── */
 const sidebar = document.createElement("aside");

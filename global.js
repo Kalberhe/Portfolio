@@ -35,11 +35,35 @@ for (const p of pages) {
 }
 nav.appendChild(ul);
 
+const navActions = document.createElement("div");
+navActions.className = "nav-actions";
+
+const navToggle = document.createElement("button");
+navToggle.id = "nav-toggle";
+navToggle.setAttribute("aria-label", "Toggle menu");
+navToggle.setAttribute("aria-expanded", "false");
+navToggle.textContent = "☰";
+navActions.appendChild(navToggle);
+
 const themeBtn = document.createElement("button");
 themeBtn.id = "theme-btn";
 themeBtn.setAttribute("aria-label", "Toggle theme");
 themeBtn.textContent = "☀️";
-nav.appendChild(themeBtn);
+navActions.appendChild(themeBtn);
+
+nav.appendChild(navActions);
+
+navToggle.addEventListener("click", () => {
+  const open = nav.classList.toggle("nav-open");
+  navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  navToggle.textContent = open ? "✕" : "☰";
+});
+
+ul.addEventListener("click", () => {
+  nav.classList.remove("nav-open");
+  navToggle.setAttribute("aria-expanded", "false");
+  navToggle.textContent = "☰";
+});
 
 const existingNav = document.querySelector("nav");
 if (existingNav) existingNav.remove();
@@ -59,25 +83,7 @@ let isDark = localStorage.getItem("theme") !== "light";
 function applyTheme() {
   document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
   themeBtn.textContent = isDark ? "☀️" : "🌙";
-  if (!isDark) {
-    document.documentElement.style.setProperty("--bg", "#f8fafc");
-    document.documentElement.style.setProperty("--surface", "#ffffff");
-    document.documentElement.style.setProperty("--surface-2", "#f1f5f9");
-    document.documentElement.style.setProperty("--text", "#0f172a");
-    document.documentElement.style.setProperty("--muted", "#94a3b8");
-    document.documentElement.style.setProperty("--muted-2", "#475569");
-    document.documentElement.style.setProperty("--border", "rgba(124,58,237,0.2)");
-    document.documentElement.style.setProperty("--border-2", "rgba(124,58,237,0.1)");
-  } else {
-    document.documentElement.style.removeProperty("--bg");
-    document.documentElement.style.removeProperty("--surface");
-    document.documentElement.style.removeProperty("--surface-2");
-    document.documentElement.style.removeProperty("--text");
-    document.documentElement.style.removeProperty("--muted");
-    document.documentElement.style.removeProperty("--muted-2");
-    document.documentElement.style.removeProperty("--border");
-    document.documentElement.style.removeProperty("--border-2");
-  }
+  themeBtn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
 }
 applyTheme();
 themeBtn.addEventListener("click", () => {

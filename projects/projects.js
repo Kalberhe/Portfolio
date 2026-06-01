@@ -23,7 +23,7 @@ async function init() {
   function render(data) {
     if (!container) return;
     if (!data.length) {
-      container.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--muted)">No matching projects.</p>`;
+      container.innerHTML = `<p class="empty-state">No matching projects.</p>`;
       return;
     }
     container.innerHTML = data.map((p, i) => cardHTML(p, i)).join("");

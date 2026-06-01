@@ -35,10 +35,10 @@ async function init() {
         obs.observe(el);
       });
     } else if (container) {
-      container.innerHTML = `<p style="color:var(--muted)">No projects found.</p>`;
+      container.innerHTML = `<p class="empty-state">No projects found.</p>`;
     }
   } catch {
-    if (container) container.innerHTML = `<p style="color:var(--muted)">Error loading projects.</p>`;
+    if (container) container.innerHTML = `<p class="empty-state">Error loading projects.</p>`;
   }
 }
 

@@ -1,73 +1,111 @@
 const pages = [
-  { url: "",          title: "Home" },
-  { url: "projects/", title: "Projects" },
-  { url: "resume/",   title: "Resume" },
-  { url: "contact/",  title: "Contact" },
-  { url: "https://github.com/Kalberhe", title: "GitHub", external: true },
+  { url: "",          title: "Home",     icon: "01" },
+  { url: "projects/", title: "Projects", icon: "02" },
+  { url: "resume/",   title: "Resume",   icon: "03" },
+  { url: "contact/",  title: "Contact",  icon: "04" },
 ];
 
 const IS_LOCAL  = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 const REPO_NAME = "Portfolio";
-const BASE_PATH = IS_LOCAL ? "/" : `/${REPO_NAME}/`;
+export const BASE_PATH = IS_LOCAL ? "/" : `/${REPO_NAME}/`;
 
-/* ── Nav ── */
-const nav = document.createElement("nav");
+export function assetUrl(path) {
+  return new URL(path, new URL(BASE_PATH, location.origin)).href;
+}
 
-const brand = document.createElement("span");
-brand.className = "nav-brand";
-brand.textContent = "KBG.";
-nav.appendChild(brand);
+export const PROFILE_IMAGE = assetUrl("assets/profile.jpg");
+export const PROFILE_FALLBACK = assetUrl("assets/profile.svg");
 
-const ul = document.createElement("ul");
+/* ── Sidebar navigation ── */
+const sidebar = document.createElement("aside");
+sidebar.className = "site-sidebar";
+sidebar.setAttribute("aria-label", "Site navigation");
+
+const brandLink = document.createElement("a");
+brandLink.className = "sidebar-brand";
+brandLink.href = assetUrl("");
+brandLink.innerHTML = `
+  <span class="sidebar-brand-name">Kalkidan Berhe<br>Gebrekirstos</span>
+  <span class="sidebar-brand-role">Data Analyst</span>
+`;
+sidebar.appendChild(brandLink);
+
+const navList = document.createElement("ul");
+navList.className = "sidebar-nav";
+
 for (const p of pages) {
   const li = document.createElement("li");
   const a  = document.createElement("a");
-  if (p.external) {
-    a.href = p.url; a.target = "_blank"; a.rel = "noopener";
-  } else {
-    a.href = new URL(p.url === "" ? "" : p.url, new URL(BASE_PATH, location.origin)).href;
-  }
-  a.textContent = p.title;
+  a.href = assetUrl(p.url === "" ? "" : p.url);
+  a.innerHTML = `<span class="nav-icon">${p.icon}</span>${p.title}`;
   const cp = location.pathname.replace(/\/$/, "") || "/";
   const lp = new URL(a.href).pathname.replace(/\/$/, "") || "/";
   if (cp === lp) a.classList.add("current");
-  li.appendChild(a); ul.appendChild(li);
+  li.appendChild(a);
+  navList.appendChild(li);
 }
-nav.appendChild(ul);
+sidebar.appendChild(navList);
 
-const navActions = document.createElement("div");
-navActions.className = "nav-actions";
+const sidebarFooter = document.createElement("div");
+sidebarFooter.className = "sidebar-footer";
 
-const navToggle = document.createElement("button");
-navToggle.id = "nav-toggle";
-navToggle.setAttribute("aria-label", "Toggle menu");
-navToggle.setAttribute("aria-expanded", "false");
-navToggle.textContent = "☰";
-navActions.appendChild(navToggle);
+const social = document.createElement("div");
+social.className = "sidebar-social";
+social.innerHTML = `
+  <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>
+  <a href="https://www.linkedin.com/in/kalkidangebrekirstos" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="mailto:gebkalkidan@gmail.com">Email</a>
+`;
+sidebarFooter.appendChild(social);
 
 const themeBtn = document.createElement("button");
 themeBtn.id = "theme-btn";
-themeBtn.setAttribute("aria-label", "Toggle theme");
-themeBtn.textContent = "☀️";
-navActions.appendChild(themeBtn);
+themeBtn.type = "button";
+themeBtn.textContent = "Light mode";
+sidebarFooter.appendChild(themeBtn);
+sidebar.appendChild(sidebarFooter);
 
-nav.appendChild(navActions);
+const sidebarToggle = document.createElement("button");
+sidebarToggle.id = "sidebar-toggle";
+sidebarToggle.type = "button";
+sidebarToggle.setAttribute("aria-label", "Open menu");
+sidebarToggle.textContent = "☰";
 
-navToggle.addEventListener("click", () => {
-  const open = nav.classList.toggle("nav-open");
-  navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-  navToggle.textContent = open ? "✕" : "☰";
+document.querySelector(".site-sidebar")?.remove();
+document.body.prepend(sidebar);
+document.body.appendChild(sidebarToggle);
+
+function closeSidebar() {
+  sidebar.classList.remove("open");
+  document.body.classList.remove("sidebar-open");
+  sidebarToggle.setAttribute("aria-label", "Open menu");
+}
+
+sidebarToggle.addEventListener("click", () => {
+  const open = sidebar.classList.toggle("open");
+  document.body.classList.toggle("sidebar-open", open);
+  sidebarToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
 });
 
-ul.addEventListener("click", () => {
-  nav.classList.remove("nav-open");
-  navToggle.setAttribute("aria-expanded", "false");
-  navToggle.textContent = "☰";
+document.body.addEventListener("click", (e) => {
+  if (document.body.classList.contains("sidebar-open") &&
+      !sidebar.contains(e.target) && e.target !== sidebarToggle) {
+    closeSidebar();
+  }
 });
 
-const existingNav = document.querySelector("nav");
-if (existingNav) existingNav.remove();
-document.body.prepend(nav);
+navList.addEventListener("click", closeSidebar);
+
+/* ── Main wrapper ── */
+if (!document.querySelector(".site-main")) {
+  const main = document.createElement("div");
+  main.className = "site-main";
+  const toMove = [...document.body.children].filter(
+    (el) => el !== sidebar && el !== sidebarToggle && el.id !== "progress-bar"
+  );
+  toMove.forEach((el) => main.appendChild(el));
+  document.body.insertBefore(main, sidebarToggle);
+}
 
 /* ── Scroll progress ── */
 const bar = document.createElement("div");
@@ -78,13 +116,15 @@ window.addEventListener("scroll", () => {
   bar.style.width = total > 0 ? `${(window.scrollY / total) * 100}%` : "0%";
 }, { passive: true });
 
-/* ── Theme (dark default) ── */
+/* ── Theme ── */
 let isDark = localStorage.getItem("theme") !== "light";
+
 function applyTheme() {
   document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
-  themeBtn.textContent = isDark ? "☀️" : "🌙";
+  themeBtn.textContent = isDark ? "Light mode" : "Dark mode";
   themeBtn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
 }
+
 applyTheme();
 themeBtn.addEventListener("click", () => {
   isDark = !isDark;
@@ -92,31 +132,57 @@ themeBtn.addEventListener("click", () => {
   applyTheme();
 });
 
-/* ── Scroll Reveal ── */
+/* ── Profile images (auto fallback) ── */
+export function bindProfileImages() {
+  document.querySelectorAll("[data-profile]").forEach((img) => {
+    if (img.dataset.bound) return;
+    img.dataset.bound = "1";
+    const primary = assetUrl(img.dataset.profile);
+    const fallback = assetUrl(img.dataset.profileFallback || "assets/profile.svg");
+    img.addEventListener("error", () => {
+      if (img.src !== fallback) img.src = fallback;
+    });
+    img.src = primary;
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bindProfileImages);
+} else {
+  bindProfileImages();
+}
+
+/* ── Scroll reveal ── */
 const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); revealObserver.unobserve(e.target); } });
-}, { threshold: 0.06, rootMargin: "0px 0px -30px 0px" });
+  entries.forEach((e) => {
+    if (e.isIntersecting) {
+      e.target.classList.add("visible");
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
 
 function initReveal() {
-  document.querySelectorAll(".reveal, .reveal-left").forEach(el => revealObserver.observe(el));
+  document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 }
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initReveal);
-} else { initReveal(); }
+} else {
+  initReveal();
+}
 
-/* ── Counter animation ── */
+/* ── Counters ── */
 export function animateCounters() {
-  document.querySelectorAll(".metric-num[data-target]").forEach(el => {
+  document.querySelectorAll(".stat-value[data-target]").forEach((el) => {
     const target = parseFloat(el.dataset.target);
     const suffix = el.dataset.suffix || "";
-    const isDecimal = el.dataset.decimal === "true";
-    const duration = 1200;
+    const duration = 1400;
     const start = performance.now();
     function tick(now) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      const val = isDecimal ? (eased * target).toFixed(1) : Math.round(eased * target);
-      el.textContent = val + suffix;
+      el.textContent = Math.round(eased * target) + suffix;
       if (progress < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -125,13 +191,21 @@ export function animateCounters() {
 
 /* ── Footer ── */
 const footer = document.createElement("footer");
-footer.innerHTML = `© ${new Date().getFullYear()} Kalkidan Berhe Gebrekirstos · <a href="mailto:gebkalkidan@gmail.com">gebkalkidan@gmail.com</a> · <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>`;
-document.body.appendChild(footer);
+footer.className = "site-footer";
+footer.innerHTML = `© ${new Date().getFullYear()} Kalkidan Berhe Gebrekirstos · <a href="mailto:gebkalkidan@gmail.com">gebkalkidan@gmail.com</a>`;
+
+const siteMain = document.querySelector(".site-main");
+if (siteMain && !siteMain.querySelector(".site-footer")) {
+  siteMain.appendChild(footer);
+}
 
 export async function fetchJSON(url) {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Failed");
     return await res.json();
-  } catch (e) { console.warn("Fetch failed", e); return []; }
+  } catch (e) {
+    console.warn("Fetch failed", e);
+    return [];
+  }
 }

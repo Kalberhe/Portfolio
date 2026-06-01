@@ -3,20 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Projects | Kalkidan</title>
+  <title>Projects | Kalkidan Berhe Gebrekirstos</title>
   <link rel="stylesheet" href="../style.css">
   <script type="module" src="../global.js"></script>
 </head>
 <body>
-  <main class="container">
-    <h1 class="page-title reveal"><span>All</span> Projects</h1>
+  <div class="site-main">
+    <main class="container">
+      <header class="page-hero reveal">
+        <p class="section-eyebrow">Portfolio</p>
+        <h1>Projects</h1>
+        <p>Data science, sports analytics, visualization, and applied ML — filter by technology or topic below.</p>
+      </header>
 
-    <div class="search-wrap reveal">
-      <input class="search-bar" type="search" placeholder="Filter by tech, topic, or year…" autocomplete="off" />
-    </div>
+      <div class="search-wrap reveal">
+        <input class="search-bar" type="search" placeholder="Search by tech, topic, or year…" autocomplete="off" />
+      </div>
 
-    <div id="projects-list" class="project-grid"></div>
-  </main>
+      <div id="projects-list" class="project-grid"></div>
+    </main>
+  </div>
 
   <script type="module" src="projects.js"></script>
 </body>

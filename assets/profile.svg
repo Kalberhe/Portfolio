@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Kalkidan Berhe Gebrekirstos">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c1a2e"/>
+      <stop offset="100%" style="stop-color:#152a47"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d4af37"/>
+      <stop offset="100%" style="stop-color:#b8962e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="200" cy="200" r="178" fill="none" stroke="url(#ring)" stroke-width="3"/>
+  <text x="200" y="218" text-anchor="middle" font-family="Georgia, serif" font-size="88" font-weight="600" fill="#d4af37" letter-spacing="-2">KB</text>
+  <text x="200" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#8b9cb5" letter-spacing="3">ADD PHOTO</text>
+</svg>

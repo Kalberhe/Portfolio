@@ -3,40 +3,48 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Contact | Kalkidan</title>
+  <title>Contact | Kalkidan Berhe Gebrekirstos</title>
   <link rel="stylesheet" href="../style.css">
   <script type="module" src="../global.js"></script>
 </head>
 <body>
-  <main class="container">
-    <div class="contact-wrap reveal">
-      <p class="section-label" style="justify-content:flex-start;">Get in touch</p>
-      <h1>Let's <span class="accent">Talk.</span></h1>
-      <p class="subtitle">Open to data analyst, ML, and analytics engineering roles. Drop a message below.</p>
+  <div class="site-main">
+    <main class="container">
+      <div class="contact-layout reveal">
+        <div class="contact-aside">
+          <p class="section-eyebrow">Contact</p>
+          <h1>Let's work<br><span class="accent">together.</span></h1>
+          <p>
+            I'm open to data analyst, analytics engineering, and ML roles. Whether you have a role in mind or just want to connect—I'd love to hear from you.
+          </p>
 
-      <form class="contact" action="mailto:gebkalkidan@gmail.com" method="POST" enctype="text/plain">
-        <div class="field">
-          <label for="email">Your Email</label>
-          <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+          <div class="contact-direct">
+            <a href="mailto:gebkalkidan@gmail.com">gebkalkidan@gmail.com</a>
+            <a href="https://www.linkedin.com/in/kalkidangebrekirstos" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>
+            <a href="../resume/">Download resume</a>
+          </div>
         </div>
-        <div class="field">
-          <label for="subject">Subject</label>
-          <input id="subject" name="subject" type="text" required placeholder="Let's connect">
-        </div>
-        <div class="field">
-          <label for="body">Message</label>
-          <textarea id="body" name="body" rows="5" required placeholder="What's on your mind?"></textarea>
-        </div>
-        <button type="submit">Send Message →</button>
-      </form>
 
-      <div class="contact-links">
-        <a href="mailto:gebkalkidan@gmail.com">✉ gebkalkidan@gmail.com</a>
-        <a href="https://www.linkedin.com/in/kalkidangebrekirstos" target="_blank" rel="noopener">in LinkedIn</a>
-        <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">⌥ GitHub</a>
-        <a href="../resume/">↗ Resume</a>
+        <div class="contact-form-panel">
+          <form class="contact" action="mailto:gebkalkidan@gmail.com" method="POST" enctype="text/plain">
+            <div>
+              <label for="email">Your email</label>
+              <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div>
+              <label for="subject">Subject</label>
+              <input id="subject" name="subject" type="text" required placeholder="Opportunity / collaboration">
+            </div>
+            <div>
+              <label for="body">Message</label>
+              <textarea id="body" name="body" rows="5" required placeholder="Tell me a bit about what you're looking for…"></textarea>
+            </div>
+            <button type="submit">Send message</button>
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </body>
 </html>

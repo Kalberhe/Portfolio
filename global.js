@@ -1,93 +1,129 @@
-console.log("Global loaded");
-
 const pages = [
-  { url: "", title: "Home" },
+  { url: "",          title: "Home" },
   { url: "projects/", title: "Projects" },
-  { url: "resume/", title: "Resume" },
-  { url: "contact/", title: "Contact" },
+  { url: "resume/",   title: "Resume" },
+  { url: "contact/",  title: "Contact" },
   { url: "https://github.com/Kalberhe", title: "GitHub", external: true },
 ];
 
-const IS_LOCAL = location.hostname === "localhost" || location.hostname === "127.0.0.1";
-const REPO_NAME = "Portfolio"; 
+const IS_LOCAL  = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const REPO_NAME = "Portfolio";
 const BASE_PATH = IS_LOCAL ? "/" : `/${REPO_NAME}/`;
 
-// 1. Create the new Dynamic Nav
+/* ── Nav ── */
 const nav = document.createElement("nav");
+
+const brand = document.createElement("span");
+brand.className = "nav-brand";
+brand.textContent = "KBG";
+nav.appendChild(brand);
+
 const ul = document.createElement("ul");
-nav.appendChild(ul);
 
 for (const p of pages) {
   const li = document.createElement("li");
-  const a = document.createElement("a");
-  
+  const a  = document.createElement("a");
+
   if (p.external) {
-    a.href = p.url;
+    a.href   = p.url;
     a.target = "_blank";
-    a.rel = "noopener";
+    a.rel    = "noopener";
   } else {
-    const rawPath = p.url === "" ? "" : p.url; 
-    a.href = new URL(rawPath, new URL(BASE_PATH, location.origin)).href;
+    a.href = new URL(p.url === "" ? "" : p.url, new URL(BASE_PATH, location.origin)).href;
   }
-  
+
   a.textContent = p.title;
 
   const currentPath = location.pathname.replace(/\/$/, "") || "/";
-  const linkPath = new URL(a.href).pathname.replace(/\/$/, "") || "/";
+  const linkPath    = new URL(a.href).pathname.replace(/\/$/, "") || "/";
   if (currentPath === linkPath) a.classList.add("current");
 
   li.appendChild(a);
   ul.appendChild(li);
 }
 
-// 2. THE FIX: Remove any existing nav first to prevent duplicates
-const existingNav = document.querySelector("nav");
-if (existingNav) {
-  existingNav.remove();
-}
+nav.appendChild(ul);
 
+/* Theme button */
+const themeBtn = document.createElement("button");
+themeBtn.id = "theme-btn";
+themeBtn.setAttribute("aria-label", "Toggle theme");
+nav.appendChild(themeBtn);
+
+const existingNav = document.querySelector("nav");
+if (existingNav) existingNav.remove();
 document.body.prepend(nav);
 
-// 3. Theme Switcher
-if (!document.getElementById("theme-switch")) {
-  const themeHTML = `
-    <label style="position:absolute; top:1rem; right:1.5rem; font-size:0.8rem; color:var(--text-muted);">
-      Theme: 
-      <select id="theme-switch" style="background:transparent; border:none; color:inherit; font-family:inherit; cursor:pointer;">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </label>
-  `;
-  document.body.insertAdjacentHTML("afterbegin", themeHTML);
+/* ── Theme ── */
+const savedTheme = localStorage.getItem("theme") || "auto";
+let currentTheme = savedTheme;
 
-  const themeSelect = document.getElementById("theme-switch");
-  const savedTheme = localStorage.getItem("theme") || "auto";
-
-  function applyTheme(t) {
-    const root = document.documentElement;
-    if(t === "auto") {
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      root.setAttribute("data-theme", isDark ? "dark" : "light");
-    } else {
-      root.setAttribute("data-theme", t);
-    }
-  }
-
-  themeSelect.value = savedTheme;
-  applyTheme(savedTheme);
-
-  themeSelect.addEventListener("change", (e) => {
-    localStorage.setItem("theme", e.target.value);
-    applyTheme(e.target.value);
-  });
+function applyTheme(t) {
+  const root  = document.documentElement;
+  const isDark = t === "auto"
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches
+    : t === "dark";
+  root.setAttribute("data-theme", isDark ? "dark" : "light");
+  themeBtn.textContent = isDark ? "☀️" : "🌙";
 }
 
+applyTheme(currentTheme);
+
+themeBtn.addEventListener("click", () => {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  currentTheme = isDark ? "light" : "dark";
+  localStorage.setItem("theme", currentTheme);
+  applyTheme(currentTheme);
+});
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (currentTheme === "auto") applyTheme("auto");
+});
+
+/* ── Progress Bar ── */
+const bar = document.createElement("div");
+bar.id = "progress-bar";
+document.body.prepend(bar);
+
+window.addEventListener("scroll", () => {
+  const scrolled = window.scrollY;
+  const total    = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : "0%";
+}, { passive: true });
+
+/* ── Scroll Reveal ── */
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+);
+
+function initReveal() {
+  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initReveal);
+} else {
+  initReveal();
+}
+
+/* ── Footer ── */
+const footer = document.createElement("footer");
+footer.innerHTML = `© ${new Date().getFullYear()} Kalkidan Berhe Gebrekirstos · Built with ♥ · <a href="https://github.com/Kalberhe" target="_blank" rel="noopener">GitHub</a>`;
+document.body.appendChild(footer);
+
+/* ── fetchJSON utility ── */
 export async function fetchJSON(url) {
   try {
     const res = await fetch(url);
-    if(!res.ok) throw new Error("Failed");
+    if (!res.ok) throw new Error("Failed");
     return await res.json();
   } catch (e) {
     console.warn("Fetch failed", e);
